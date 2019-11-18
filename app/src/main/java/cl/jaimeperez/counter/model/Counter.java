@@ -3,7 +3,9 @@ package cl.jaimeperez.counter.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Counter {
+import java.io.Serializable;
+
+public class Counter implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -38,5 +40,4 @@ public class Counter {
     public void setCount(Integer count) {
         this.count = count;
     }
-
 }

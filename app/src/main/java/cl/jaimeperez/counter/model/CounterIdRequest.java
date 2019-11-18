@@ -1,12 +1,12 @@
 package cl.jaimeperez.counter.model;
 
-import static cl.jaimeperez.counter.utils.CONTS.empty_string;
+import static cl.jaimeperez.counter.utils.CONTS.EMPTY_STRING;
 
 public class CounterIdRequest {
     private String id;
 
     CounterIdRequest() {
-        this.id = empty_string;
+        this.id = EMPTY_STRING;
     }
 
     String getId() {

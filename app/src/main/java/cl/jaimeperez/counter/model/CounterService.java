@@ -19,7 +19,7 @@ public interface CounterService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
-    @GET("api/v1/counters")
+    @GET("/api/v1/counters")
     Call<List<Counter>> getCounters();
 
     //Method to insert Counter
@@ -27,7 +27,7 @@ public interface CounterService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
-    @POST("api/v1/counter")
+    @POST("/api/v1/counter")
     Call<List<Counter>> insertCounter(@Body CounterInsertRequest body);
 
     //Method to increment the counter
@@ -35,7 +35,7 @@ public interface CounterService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
-    @POST("api/v1/counter/inc")
+    @POST("/api/v1/counter/inc")
     Call<List<Counter>> incrementCounter(@Body CounterIdRequest body);
 
     //Method to decrement the counter
@@ -43,7 +43,7 @@ public interface CounterService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
-    @POST("api/v1/counter/dec")
+    @POST("/api/v1/counter/dec")
     Call<List<Counter>> decrementCounter(@Body CounterIdRequest body);
 
     //Method to delete the counter
@@ -51,6 +51,6 @@ public interface CounterService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
-    @DELETE("api/v1/counter")
+    @DELETE("/api/v1/counter")
     Call<List<Counter>> deleteCounter(@Body CounterIdRequest body);
 }

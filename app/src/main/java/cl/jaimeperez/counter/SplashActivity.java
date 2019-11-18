@@ -1,18 +1,30 @@
 package cl.jaimeperez.counter;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import com.google.android.material.snackbar.Snackbar;
 
-public class SplashActivity extends AppCompatActivity {
+import java.io.Serializable;
+import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
+import cl.jaimeperez.counter.model.Counter;
+import cl.jaimeperez.counter.presenter.CounterContract;
+import cl.jaimeperez.counter.presenter.CounterPresenter;
+import cl.jaimeperez.counter.view.MainActivity;
+
+import static cl.jaimeperez.counter.utils.CONTS.COUNTER_LIST;
+
+public class SplashActivity extends AppCompatActivity implements CounterContract.ViewSimple {
 
     private static final long SPLASH_SCREEN_DELAY = 3000;
+    //Class of MVP
+    public CounterContract.Presenter mPresenter;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +32,36 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         TextView titleSplash = findViewById(R.id.titleSplash);
         titleSplash.setVisibility(View.VISIBLE);
+        progressBar = findViewById(R.id.progressBar);
+        //Load the data
+        mPresenter = new CounterPresenter(getLoaderManager(), this, this);
+        mPresenter.loadCounters();
+    }
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+    @Override
+    public void showErrorView() {
+        progressBar.setVisibility(View.GONE);
+        Snackbar.make(findViewById(android.R.id.content), R.string.error_load_message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.retry, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        mPresenter.loadCounters();
+                    }
+                })
+                .show();
+    }
 
-        };
+    @Override
+    public void setCounters(List<Counter> counters) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra(COUNTER_LIST, (Serializable) counters);
+        startActivity(intent);
+        finish();
+    }
 
-        Timer timer = new Timer();
-        timer.schedule(task, SPLASH_SCREEN_DELAY);
-
+    @Override
+    public void setPresenter(CounterContract.Presenter presenter) {
+        this.mPresenter = presenter;
     }
 }

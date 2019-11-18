@@ -1,18 +1,28 @@
-package cl.jaimeperez.counter;
+package cl.jaimeperez.counter.view;
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import cl.jaimeperez.counter.R;
+import cl.jaimeperez.counter.model.Counter;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import static cl.jaimeperez.counter.utils.CONTS.COUNTER_LIST;
+import static cl.jaimeperez.counter.utils.CONTS.ONE_VALUE;
 
 public class MainActivity extends AppCompatActivity {
+
+    private CounterListFragment counterListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +39,22 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        //Read data from Splash
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            List<Counter> receivedCounterList = (List<Counter>) extras.getSerializable(COUNTER_LIST);
+            if (receivedCounterList != null && receivedCounterList.size() > ONE_VALUE) {
+                counterListFragment = CounterListFragment.newInstance(ONE_VALUE);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.container, counterListFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        }
+
+
     }
 
     @Override
@@ -46,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_credits) {
             return true;
         }
 
