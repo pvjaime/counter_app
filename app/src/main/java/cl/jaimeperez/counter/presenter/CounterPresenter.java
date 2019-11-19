@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cl.jaimeperez.counter.model.Counter;
 import cl.jaimeperez.counter.model.CounterAddLoader;
+import cl.jaimeperez.counter.model.CounterDeleteLoader;
 import cl.jaimeperez.counter.model.CounterLoader;
 import cl.jaimeperez.counter.model.CounterUpdateLoader;
 
@@ -24,6 +25,7 @@ public class CounterPresenter implements CounterContract.Presenter {
     private CounterLoader counterLoader;
     private CounterAddLoader counterAddLoader;
     private CounterUpdateLoader counterUpdateLoader;
+    private CounterDeleteLoader counterDeleteLoader;
     private LoaderManager mLoaderManager;
     private Context mContext;
     private final static int COUNTER_LOAD = -1;
@@ -48,11 +50,6 @@ public class CounterPresenter implements CounterContract.Presenter {
     }
 
     @Override
-    public void retry() {
-
-    }
-
-    @Override
     public void loadCounters() {
         counterLoader = new CounterLoader(mContext);
         mLoaderManager.restartLoader(COUNTER_LOAD, null, counterLoadListener);
@@ -73,8 +70,10 @@ public class CounterPresenter implements CounterContract.Presenter {
     }
 
     @Override
-    public List<Counter> deleteCounter(String id) {
-        return null;
+    public void deleteCounter(String id) {
+        mView.showProgress();
+        counterDeleteLoader = new CounterDeleteLoader(mContext, id);
+        mLoaderManager.restartLoader(COUNTER_DELETE, null, counterDeleteListener);
     }
 
     //List Counter
@@ -131,6 +130,33 @@ public class CounterPresenter implements CounterContract.Presenter {
         @Override
         public Loader<List<Counter>> onCreateLoader(int id, @Nullable Bundle args) {
             return counterUpdateLoader;
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<List<Counter>> loader, List<Counter> data) {
+            mView.dismissProgress();
+            if (data != null) {
+                if(data.size() >= ONE_VALUE) {
+                    mView.setCounters(data);
+                }else{
+                    mView.showNoResultsView();
+                }
+            } else {
+                mView.showErrorView();
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<List<Counter>> loader) {
+
+        }
+    };
+
+    //Delete Counter
+    private LoaderManager.LoaderCallbacks<List<Counter>> counterDeleteListener = new LoaderManager.LoaderCallbacks<List<Counter>>() {
+        @Override
+        public Loader<List<Counter>> onCreateLoader(int id, @Nullable Bundle args) {
+            return counterDeleteLoader;
         }
 
         @Override

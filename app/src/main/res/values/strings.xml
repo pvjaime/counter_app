@@ -9,6 +9,10 @@
     <string name="name_hint">Nombre</string>
     <string name="empty_string_error">Debe agregar un valor</string>
     <string name="list_counters">Lista de Contadores Agregados</string>
-    <string name="no_data">Hola! \n No tienes ningun contador \n Prueba agregando uno \n en el boton +</string>
+    <string name="no_data">Hola! \n No tienes ningun contador \n Prueba agregando uno \n en el boton + \n Para borrarlo presiona el contados unos segundos</string>
     <string name="credit_text">Hecho por \n Jaime Perez Varas</string>
+    <string name="yes"> Si </string>
+    <string name="no"> No </string>
+    <string name="delete_title_dialog"> Borrar Contador </string>
+    <string name="delete_confirmation"> ¿Estas seguro que deseas borrar este contador? </string>
 </resources>

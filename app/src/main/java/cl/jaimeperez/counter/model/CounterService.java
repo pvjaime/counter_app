@@ -7,6 +7,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -51,6 +52,6 @@ public interface CounterService {
             "Accept: application/json",
             "Content-Type: application/json"
     })
-    @DELETE("/api/v1/counter")
+    @HTTP(method = "DELETE", path = "/api/v1/counter", hasBody = true)
     Call<List<Counter>> deleteCounter(@Body CounterIdRequest body);
 }

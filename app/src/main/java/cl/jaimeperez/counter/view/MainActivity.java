@@ -1,5 +1,6 @@
 package cl.jaimeperez.counter.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,9 +13,9 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.io.Serializable;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -150,7 +151,13 @@ public class MainActivity extends AppCompatActivity implements CounterContract.V
 
     @Override
     public void onListFragmentInteraction(Counter item) {
-
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.delete_title_dialog)
+                .setMessage(R.string.delete_confirmation)
+                .setPositiveButton(R.string.yes, (dialog, which) -> mPresenter.deleteCounter(item.getId()))
+                .setNegativeButton(R.string.no, null)
+                .show();
     }
 
     @Override

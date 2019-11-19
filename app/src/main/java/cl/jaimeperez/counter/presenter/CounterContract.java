@@ -35,15 +35,13 @@ public interface CounterContract {
 
     interface Presenter {
 
-        void retry();
-
         void loadCounters();
 
         void insertCounter(String nameCounter);
 
         void updateCounter(String id, boolean isincrement);
 
-        List<Counter> deleteCounter(String id);
+        void deleteCounter(String id);
 
     }
 

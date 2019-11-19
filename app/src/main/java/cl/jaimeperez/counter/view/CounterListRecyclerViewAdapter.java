@@ -14,7 +14,7 @@ import cl.jaimeperez.counter.model.Counter;
 import cl.jaimeperez.counter.utils.CONTS;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Counter} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */
 public class CounterListRecyclerViewAdapter extends RecyclerView.Adapter<CounterListRecyclerViewAdapter.ViewHolder> {
@@ -40,13 +40,18 @@ public class CounterListRecyclerViewAdapter extends RecyclerView.Adapter<Counter
         holder.mNameCounter.setText(mValues.get(position).getTitle());
         holder.mCounter.setText(mValues.get(position).getCount() + CONTS.EMPTY_STRING);
 
-        holder.mView.setOnClickListener(v -> {
-            if (null != mListener) {
-                // Notify the active callbacks interface (the activity, if the
-                // fragment is attached to one) that an item has been selected.
-                mListener.onListFragmentInteraction(holder.mItem);
-            }
-        });
+        holder.mView.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if (null != mListener) {
+                            // Notify the active callbacks interface (the activity, if the
+                            // fragment is attached to one) that an item has been selected.
+                            mListener.onListFragmentInteraction(holder.mItem);
+                        }
+                        return true;
+                    }
+                });
 
         holder.mIncCounter.setOnClickListener(v -> {
             if (null != mListener) {

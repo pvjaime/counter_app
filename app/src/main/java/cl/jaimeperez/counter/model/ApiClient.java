@@ -98,6 +98,17 @@ public class ApiClient implements CounterContract.Model {
 
     @Override
     public List<Counter> deleteCounter(CounterIdRequest body) {
+        CounterService service = retrofit.create(CounterService.class);
+        Call<List<Counter>> call;
+        call = service.deleteCounter(body);
+        try {
+            Response<List<Counter>> response = call.execute();
+            if (response.body() != null) {
+                return response.body();
+            }
+        } catch (IOException | JsonParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
