@@ -1,5 +1,6 @@
 package cl.jaimeperez.counter.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements CounterContract.V
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_credits) {
+            Intent intent = new Intent(getApplicationContext(), CreditActivity.class);
+            startActivity(intent);
             return true;
         }
 

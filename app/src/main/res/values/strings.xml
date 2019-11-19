@@ -9,4 +9,6 @@
     <string name="name_hint">Nombre</string>
     <string name="empty_string_error">Debe agregar un valor</string>
     <string name="list_counters">Lista de Contadores Agregados</string>
+    <string name="no_data">Hola! \n No tienes ningun contador \n Prueba agregando uno \n en el boton +</string>
+    <string name="credit_text">Hecho por \n Jaime Perez Varas</string>
 </resources>
