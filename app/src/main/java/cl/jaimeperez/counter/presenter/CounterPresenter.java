@@ -11,18 +11,25 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import cl.jaimeperez.counter.model.Counter;
+import cl.jaimeperez.counter.model.CounterAddLoader;
 import cl.jaimeperez.counter.model.CounterLoader;
+import cl.jaimeperez.counter.model.CounterUpdateLoader;
+
+import static cl.jaimeperez.counter.utils.CONTS.ONE_VALUE;
 
 public class CounterPresenter implements CounterContract.Presenter {
 
     private CounterContract.ViewSimple mViewSimple;
     private CounterContract.View mView;
     private CounterLoader counterLoader;
+    private CounterAddLoader counterAddLoader;
+    private CounterUpdateLoader counterUpdateLoader;
     private LoaderManager mLoaderManager;
     private Context mContext;
     private final static int COUNTER_LOAD = -1;
-    private final static int COUNTER_UPDATE = -2;
-    private final static int COUNTER_DELETE = -3;
+    private final static int COUNTER_ADD = -2;
+    private final static int COUNTER_UPDATE = -3;
+    private final static int COUNTER_DELETE = -4;
 
     public CounterPresenter(@NonNull LoaderManager loaderManager,
                             @NonNull CounterContract.ViewSimple view, Context context) {
@@ -33,10 +40,11 @@ public class CounterPresenter implements CounterContract.Presenter {
     }
 
     public CounterPresenter(@NonNull LoaderManager loaderManager,
-                            @NonNull CounterContract.View view) {
+                            @NonNull CounterContract.View view, Context context) {
         mLoaderManager = loaderManager;
         mView = view;
         mView.setPresenter(this);
+        mContext = context;
     }
 
     @Override
@@ -47,19 +55,21 @@ public class CounterPresenter implements CounterContract.Presenter {
     @Override
     public void loadCounters() {
         counterLoader = new CounterLoader(mContext);
-        Log.d("TEST", "Holi 1");
         mLoaderManager.restartLoader(COUNTER_LOAD, null, counterLoadListener);
-        Log.d("TEST", "Holi 2");
     }
 
     @Override
-    public List<Counter> insertCounter(String nameCounter) {
-        return null;
+    public void insertCounter(String nameCounter) {
+        mView.showProgress();
+        counterAddLoader = new CounterAddLoader(mContext, nameCounter);
+        mLoaderManager.restartLoader(COUNTER_ADD, null, counterAddListener);
     }
 
     @Override
-    public List<Counter> updateCounter(String id, boolean isincrement) {
-        return null;
+    public void updateCounter(String id, boolean isincrement) {
+        mView.showProgress();
+        counterUpdateLoader = new CounterUpdateLoader(mContext, id, isincrement);
+        mLoaderManager.restartLoader(COUNTER_UPDATE, null, counterUpdateListener);
     }
 
     @Override
@@ -67,19 +77,73 @@ public class CounterPresenter implements CounterContract.Presenter {
         return null;
     }
 
+    //List Counter
     private LoaderManager.LoaderCallbacks<List<Counter>> counterLoadListener = new LoaderManager.LoaderCallbacks<List<Counter>>() {
         @Override
         public Loader<List<Counter>> onCreateLoader(int id, @Nullable Bundle args) {
-            Log.d("TEST", "Holi 2.1");
             return counterLoader;
         }
 
         @Override
         public void onLoadFinished(@NonNull Loader<List<Counter>> loader, List<Counter> data) {
-            if(data != null) {
+            if (data != null) {
                 mViewSimple.setCounters(data);
-            }else{
+            } else {
                 mViewSimple.showErrorView();
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<List<Counter>> loader) {
+
+        }
+    };
+
+    //Add Counter
+    private LoaderManager.LoaderCallbacks<List<Counter>> counterAddListener = new LoaderManager.LoaderCallbacks<List<Counter>>() {
+        @Override
+        public Loader<List<Counter>> onCreateLoader(int id, @Nullable Bundle args) {
+            return counterAddLoader;
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<List<Counter>> loader, List<Counter> data) {
+            mView.dismissProgress();
+            if (data != null) {
+                if(data.size() >= ONE_VALUE) {
+                    mView.setCounters(data);
+                }else{
+                    mView.showNoResultsView();
+                }
+            } else {
+                mView.showErrorView();
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<List<Counter>> loader) {
+
+        }
+    };
+
+    //Update Counter
+    private LoaderManager.LoaderCallbacks<List<Counter>> counterUpdateListener = new LoaderManager.LoaderCallbacks<List<Counter>>() {
+        @Override
+        public Loader<List<Counter>> onCreateLoader(int id, @Nullable Bundle args) {
+            return counterUpdateLoader;
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<List<Counter>> loader, List<Counter> data) {
+            mView.dismissProgress();
+            if (data != null) {
+                if(data.size() >= ONE_VALUE) {
+                    mView.setCounters(data);
+                }else{
+                    mView.showNoResultsView();
+                }
+            } else {
+                mView.showErrorView();
             }
         }
 

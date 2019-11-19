@@ -9,6 +9,14 @@ public class CounterInsertRequest {
         this.title = EMPTY_STRING;
     }
 
+    public CounterInsertRequest(String title) {
+        this.title = title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     String getTitle() {
         return title;
     }

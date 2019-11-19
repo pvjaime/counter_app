@@ -4,4 +4,9 @@
     <string name="icon_desc">Icon off App</string>
     <string name="error_load_message">Error al cargar la información</string>
     <string name="retry">Reintentar</string>
+    <string name="add_counter_title">Agregar un nuevo contador</string>
+    <string name="add_counter">Agregar</string>
+    <string name="name_hint">Nombre</string>
+    <string name="empty_string_error">Debe agregar un valor</string>
+    <string name="list_counters">Lista de Contadores Agregados</string>
 </resources>

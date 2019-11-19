@@ -13,8 +13,6 @@ public interface CounterContract {
 
         void showErrorView();
 
-        void showErrorView(String msg);
-
         void showProgress();
 
         void dismissProgress();
@@ -22,6 +20,8 @@ public interface CounterContract {
         void setCounters(List<Counter> counters);
 
         void showNoResultsView();
+
+        void addCounter(String name);
 
     }
 
@@ -39,9 +39,9 @@ public interface CounterContract {
 
         void loadCounters();
 
-        List<Counter> insertCounter(String nameCounter);
+        void insertCounter(String nameCounter);
 
-        List<Counter> updateCounter(String id, boolean isincrement);
+        void updateCounter(String id, boolean isincrement);
 
         List<Counter> deleteCounter(String id);
 

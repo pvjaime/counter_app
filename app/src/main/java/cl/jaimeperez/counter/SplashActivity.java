@@ -21,9 +21,9 @@ import static cl.jaimeperez.counter.utils.CONTS.COUNTER_LIST;
 
 public class SplashActivity extends AppCompatActivity implements CounterContract.ViewSimple {
 
-    private static final long SPLASH_SCREEN_DELAY = 3000;
     //Class of MVP
     public CounterContract.Presenter mPresenter;
+    //Progress Bar
     private ProgressBar progressBar;
 
     @Override

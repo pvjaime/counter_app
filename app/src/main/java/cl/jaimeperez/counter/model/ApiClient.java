@@ -50,16 +50,49 @@ public class ApiClient implements CounterContract.Model {
 
     @Override
     public List<Counter> insertCounter(CounterInsertRequest counter) {
+        CounterService service = retrofit.create(CounterService.class);
+        Call<List<Counter>> call;
+        call = service.insertCounter(counter);
+        try {
+            Response<List<Counter>> response = call.execute();
+            if (response.body() != null) {
+                return response.body();
+            }
+        } catch (IOException | JsonParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public List<Counter> incrementCounter(CounterIdRequest body) {
+        CounterService service = retrofit.create(CounterService.class);
+        Call<List<Counter>> call;
+        call = service.incrementCounter(body);
+        try {
+            Response<List<Counter>> response = call.execute();
+            if (response.body() != null) {
+                return response.body();
+            }
+        } catch (IOException | JsonParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public List<Counter> decrementCounter(CounterIdRequest body) {
+        CounterService service = retrofit.create(CounterService.class);
+        Call<List<Counter>> call;
+        call = service.decrementCounter(body);
+        try {
+            Response<List<Counter>> response = call.execute();
+            if (response.body() != null) {
+                return response.body();
+            }
+        } catch (IOException | JsonParseException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
